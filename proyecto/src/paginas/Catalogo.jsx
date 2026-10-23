@@ -50,8 +50,6 @@ function Catalogo({ propias }) {
   if (error) return <p className="error">{error}</p>;
   if (cargando) return <p>Cargando recetas…</p>;
 
-  console.log(visibles);
-
   return (
     <section>
       <h1>Recetas</h1>

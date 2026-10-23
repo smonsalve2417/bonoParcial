@@ -1,22 +1,22 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useState } from "react";
+import { useNavigate } from "react-router";
 
-const VACIO = { nombre: '', categoria: 'almuerzo', tiempo: '' };
+const VACIO = { nombre: "", categoria: "almuerzo", tiempo: "" };
 
 function NuevaReceta({ onAgregar }) {
   const [form, setForm] = useState(VACIO);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (form.nombre.trim() === '') {
-      setError('La receta necesita un nombre.');
+    if (form.nombre.trim() === "") {
+      setError("La receta necesita un nombre.");
       return;
     }
     if (!(Number(form.tiempo) > 0)) {
-      setError('El tiempo debe ser un número mayor que cero.');
+      setError("El tiempo debe ser un número mayor que cero.");
       return;
     }
 
@@ -26,7 +26,7 @@ function NuevaReceta({ onAgregar }) {
       categoria: form.categoria,
       tiempo: Number(form.tiempo),
     });
-    navigate('/recetas');
+    navigate("/recetas");
   }
 
   return (
@@ -60,11 +60,15 @@ function NuevaReceta({ onAgregar }) {
           <input
             type="number"
             value={form.tiempo}
-            onChange={(e) => setForm({ tiempo: e.target.value })}
+            onChange={(e) => setForm({ ...form, tiempo: e.target.value })}
           />
         </label>
 
-        {error && <p className="error" role="alert">{error}</p>}
+        {error && (
+          <p className="error" role="alert">
+            {error}
+          </p>
+        )}
 
         <button type="submit">Guardar receta</button>
       </form>

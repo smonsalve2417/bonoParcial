@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
-import { obtenerRecetas } from '../api';
+import { useEffect, useState } from "react";
+import { Link } from "react-router";
+import { obtenerRecetas } from "../api";
 
 function Favoritos({ favoritos, onQuitar }) {
   const [recetas, setRecetas] = useState([]);
+  const [orden, setOrden] = useState("nombre");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -11,7 +12,7 @@ function Favoritos({ favoritos, onQuitar }) {
     obtenerRecetas(controller.signal)
       .then(setRecetas)
       .catch((error) => {
-        if (error.name !== 'AbortError') console.error(error);
+        if (error.name !== "AbortError") console.error(error);
       });
 
     return () => controller.abort();
@@ -22,24 +23,27 @@ function Favoritos({ favoritos, onQuitar }) {
       <section>
         <h1>Favoritos</h1>
         <p>
-          Aún no tienes favoritos. <Link to="/recetas">Explora las recetas</Link>.
+          Aún no tienes favoritos.{" "}
+          <Link to="/recetas">Explora las recetas</Link>.
         </p>
       </section>
     );
   }
 
-  const [orden, setOrden] = useState('nombre');
-
   const lista = recetas
     .filter((r) => favoritos.includes(r.id))
-    .sort((a, b) => (orden === 'nombre' ? a.nombre.localeCompare(b.nombre) : a.tiempo - b.tiempo));
+    .sort((a, b) =>
+      orden === "nombre"
+        ? a.nombre.localeCompare(b.nombre)
+        : a.tiempo - b.tiempo,
+    );
 
   return (
     <section>
       <h1>Favoritos</h1>
 
       <label>
-        Ordenar por{' '}
+        Ordenar por
         <select value={orden} onChange={(e) => setOrden(e.target.value)}>
           <option value="nombre">nombre</option>
           <option value="tiempo">tiempo</option>

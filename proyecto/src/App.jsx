@@ -8,20 +8,6 @@ import Favoritos from "./paginas/Favoritos";
 import NuevaReceta from "./paginas/NuevaReceta";
 import NoEncontrada from "./paginas/NoEncontrada";
 
-function leerFavoritos() {
-  return JSON.parse(localStorage.getItem("favoritos")) ?? [];
-}
-function toggleFavorito(id) {
-  if (favoritos.includes(id)) {
-    setFavoritos(favoritos.filter((f) => f !== id));
-  } else {
-    setFavoritos([...favoritos, id]);
-  }
-}
-
-function agregarReceta(receta) {
-  setPropias([...propias, receta]);
-}
 function App() {
   const [favoritos, setFavoritos] = useState(leerFavoritos());
   const [propias, setPropias] = useState([]);
@@ -30,9 +16,24 @@ function App() {
     localStorage.setItem("favoritos", JSON.stringify(favoritos));
   }, [favoritos]);
 
+  function leerFavoritos() {
+    return JSON.parse(localStorage.getItem("favoritos")) ?? [];
+  }
+  function toggleFavorito(id) {
+    if (favoritos.includes(id)) {
+      setFavoritos(favoritos.filter((f) => f !== id));
+    } else {
+      setFavoritos([...favoritos, id]);
+    }
+  }
+
+  function agregarReceta(receta) {
+    setPropias([...propias, receta]);
+  }
+
   return (
     <div className="app">
-      <Navegacion totalFavoritos={favoritos.length} />
+      <Navegacion totalFavoritos={favoritos.length ? favoritos.length : ""} />
       <main>
         <Routes>
           <Route path="/" element={<Inicio />} />
