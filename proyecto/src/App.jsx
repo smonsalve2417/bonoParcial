@@ -10,7 +10,7 @@ import NoEncontrada from "./paginas/NoEncontrada";
 
 function App() {
   const [favoritos, setFavoritos] = useState(leerFavoritos());
-  const [propias, setPropias] = useState([]);
+  const [propias, setPropias] = useState(leerPropias());
 
   useEffect(() => {
     localStorage.setItem("favoritos", JSON.stringify(favoritos));
@@ -19,6 +19,11 @@ function App() {
   function leerFavoritos() {
     return JSON.parse(localStorage.getItem("favoritos")) ?? [];
   }
+
+  function leerPropias() {
+    return JSON.parse(localStorage.getItem("propias")) ?? [];
+  }
+
   function toggleFavorito(id) {
     if (favoritos.includes(id)) {
       setFavoritos(favoritos.filter((f) => f !== id));
@@ -29,6 +34,7 @@ function App() {
 
   function agregarReceta(receta) {
     setPropias([...propias, receta]);
+    localStorage.setItem("propias", JSON.stringify([...propias, receta]));
   }
 
   return (
@@ -58,7 +64,7 @@ function App() {
             path="/nueva"
             element={<NuevaReceta onAgregar={agregarReceta} />}
           />
-          <Route path="/404" element={<NoEncontrada />} />
+          <Route path="/*" element={<NoEncontrada />} />
         </Routes>
       </main>
     </div>
